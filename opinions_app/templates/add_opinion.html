@@ -8,7 +8,7 @@
       <div class="col-12 col-lg-7 my-5">
         <!-- Добавляем тег form и указываем, 
         что отправлять форму надо методом POST, а валидировать в браузере не надо -->
-            <form method="POST" novalidate>
+            <form method="POST" novalidate enctype="multipart/form-data">
               {{ form.csrf_token }}
               {{ form.title(class="form-control form-control-lg py-3 mb-3", placeholder=form.title.label.text) }}
               {% if form.title.errors %}
@@ -19,6 +19,7 @@
                   </p>
               {% endif %}
               {{ form.source(class="form-control form-control-lg py-3 mb-3", placeholder=form.source.label.text) }}
+
               {{ form.text(class="form-control form-control-lg py-3 mb-3", placeholder=form.text.label.text, rows="3", cols="40")}}
               {% if form.text.errors %}
                <p class="text-danger">
@@ -27,7 +28,19 @@
                 {% endfor %}
                </p>
               {% endif %}
+              <!-- Добавьте после поля для ввода описания поле для изображений -->
+              {{ form.images(class="form-control form-control-lg py-2 mb-3", multiple=True) }}
+              <!-- Включите отображение ошибок для этого поля -->
+              {% if form.images.errors %}
+                <p class="text-danger">
+                {% for error in form.images.errors %}
+                  {{ error }}
+                {% endfor %}
+                </p>
+              {% endif %}
+
               {{ form.submit(class="button px-5 py-3 btn") }}
+
             </form>
             <p class="py-3 mb-3">
               {% with messages = get_flashed_messages() %}
